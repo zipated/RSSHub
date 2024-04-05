@@ -278,5 +278,5 @@ export default {
     excludeRetweet,
     getSearch,
     getUserTweet,
-    init: initToken,
+    init: (config.twitter.oauthTokens?.length && config.twitter.oauthTokenSecrets.length && config.twitter.oauthTokens.length === config.twitter.oauthTokenSecrets.length) ? initToken : () => {},
 };
