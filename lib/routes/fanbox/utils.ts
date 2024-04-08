@@ -1,11 +1,16 @@
-const got = require('@/utils/got');
+import got from '@/utils/got';
+import { config } from '@/config';
 
-const get_header = require('./header');
+const get_header = () => {
+    const cookie = config.fanbox.session || '';
+    const headers: Record<string, string> = { origin: 'https://fanbox.cc', cookie };
+    return headers;
+};
 
-async function get_twitter(t) {
+async function getTwitter(t: string): Promise<string> {
     try {
         const resp = await got(`https://publish.twitter.com/oembed?url=${t}`);
-        return resp.data.html;
+        return (resp.data).html;
     } catch {
         return `<div style="border-style:solid;border-width:0.5px;padding:0.5em;">This tweet may not exist</div>`;
     }
@@ -17,14 +22,14 @@ async function get_fanbox(p) {
         const post_id = m[2];
         const api_url = `https://api.fanbox.cc/post.info?postId=${post_id}`;
         const resp = await got(api_url, { headers: get_header() });
-        const post = resp.data.body;
+        const post = (resp.data).body;
 
         const home_url = `https://${post.creatorId}.fanbox.cc`;
         const web_url = `${home_url}/posts/${post.id}`;
         const datetime = new Date(post.updatedDatetime).toLocaleString('ja');
 
         const box_html = `
-            <div style="width:640;padding:0.5em;border-style:solid;border-width:0.5px">
+            <div style="width:640px;padding:0.5em;border-style:solid;border-width:0.5px">
                 <img width=300 src="${post.imageForShare}" />
                 <br/>
                 <a href="${web_url}" style="font-weight:bold">${post.title}</a>
@@ -47,7 +52,7 @@ async function embed_map(e) {
     const sp = e.serviceProvider;
 
     let ret = `Unknown host: ${sp}, with ID: ${id}`;
-    let url = null;
+    let url = '';
 
     try {
         switch (sp) {
@@ -65,7 +70,7 @@ async function embed_map(e) {
                 break;
             case 'twitter':
                 url = `https://twitter.com/i/status/${id}`;
-                ret = await get_twitter(url);
+                ret = await getTwitter(url);
                 break;
             case 'google_forms':
                 url = `https://docs.google.com/forms/d/e/${id}/viewform?embedded=true`;
@@ -73,7 +78,7 @@ async function embed_map(e) {
                 break;
             case 'fanbox': {
                 const info = await get_fanbox(id);
-                url = info.url;
+                url = info.url || '';
                 ret = info.html;
                 break;
             }
@@ -142,10 +147,10 @@ async function video_t(body) {
     return ret;
 }
 
+/* eslint-disable no-await-in-loop */
 async function blog_t(body) {
-    let ret = [];
-    for (let x = 0; x < body.blocks.length; ++x) {
-        const b = body.blocks[x];
+    let ret: string[] = [];
+    for (const b of body.blocks) {
         ret.push('<p>');
 
         switch (b.type) {
@@ -156,17 +161,17 @@ async function blog_t(body) {
                 ret.push(`<h2>${b.text}</h2>`);
                 break;
             case 'image': {
-                const i = body.imageMap[b.imageId];
+                const i = body.imageMap[b.imageId || ''];
                 ret.push(`<img src="${i.originalUrl}">`);
                 break;
             }
             case 'file': {
-                const f = body.fileMap[b.fileId];
+                const f = body.fileMap[b.fileId || ''];
                 ret.push(`<a href="${f.url}" download="${f.name}.${f.extension}">${f.name}.${f.extension}</a>`);
                 break;
             }
             case 'embed':
-                ret.push(embed_map(body.embedMap[b.embedId])); // Promise object
+                ret.push(await embed_map(body.embed_map[b.embedId || ''])); // Promise object
                 break;
         }
     }
@@ -189,7 +194,7 @@ async function conv_article(i) {
 
     if (!i.body) {
         ret += i.excerpt;
-        return ret;
+        return { title: i.title || 'No title', description: ret, pubDate: new Date(i.publishedDatetime).toUTCString(), link: `https://${i.creatorId}.fanbox.cc/posts/${i.id}`, category: i.tags };
     }
 
     // console.log(i);
@@ -214,14 +219,13 @@ async function conv_article(i) {
         default:
             ret += '<b>Unsupported content (RSSHub)</b>';
     }
-    return ret;
+    return {
+        title: i.title || 'No title',
+        description: ret,
+        pubDate: new Date(i.publishedDatetime).toUTCString(),
+        link: `https://${i.creatorId}.fanbox.cc/posts/${i.id}`,
+        category: i.tags
+    };
 }
 
-// render wrapper
-module.exports = async (i) => ({
-    title: i.title || `No title`,
-    description: await conv_article(i),
-    pubDate: new Date(i.publishedDatetime).toUTCString(),
-    link: `https://${i.creatorId}.fanbox.cc/posts/${i.id}`,
-    category: i.tags,
-});
+export { conv_article, get_header };
