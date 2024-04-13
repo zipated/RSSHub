@@ -4,22 +4,22 @@ import { isValidHost } from '@/utils/valid-host';
 import { convArticle, getHeader } from './utils';
 
 export const route: Route = {
-    path: '/:user',
+    path: '/:user?',
     categories: ['social-media'],
     example: '/fanbox/otomeoto',
-    parameters: { user: 'User name. Can be found in URL.' },
+    parameters: { user: 'optional - User name. Can be found in URL. Default is official news' },
     radar: [
         {
             source: ['fanbox.cc/@:user'],
         },
     ],
-    name: 'User Posts',
+    name: 'User',
     maintainers: ['sgqy', 'zipated'],
     handler,
 };
 
 async function handler(ctx) {
-    const user = ctx.req.param('user');
+    const user = ctx.req.param('user') || 'official'; // if no user specified, just go to official page
     if (!isValidHost(user)) {
         throw new Error('Invalid user');
     }
