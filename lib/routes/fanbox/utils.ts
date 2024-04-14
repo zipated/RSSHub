@@ -2,13 +2,9 @@ import ofetch from '@/utils/ofetch';
 import { config } from '@/config';
 import cache from '@/utils/cache';
 
-let post = null;
-
-const getHeader = () => {
-    const sessid = config.fanbox.session;
-    const cookie = sessid ? `FANBOXSESSID=${sessid}` : '';
-    const headers = { origin: 'https://fanbox.cc', cookie };
-    return headers;
+const headers = {
+    origin: 'https://fanbox.cc',
+    cookie: config.fanbox.session ? `FANBOXSESSID=${config.fanbox.session}` : '',
 };
 
 const getTwitter = async (t) => {
@@ -24,7 +20,7 @@ const getFanbox = async (p) => {
     try {
         const m = p.match(/creator\/(\d+)\/post\/(\d+)/);
         const post_id = m[2];
-        await getPost(post_id);
+        const resp = await ofetch(`https://api.fanbox.cc/post.info?postId=${post_id}`, { headers });
         const post = resp.body;
 
         const home_url = `https://${post.creatorId}.fanbox.cc`;
@@ -47,15 +43,6 @@ const getFanbox = async (p) => {
     } catch {
         return { url: null, html: `<div style="border-style:solid;border-width:0.5px;padding:0.5em;">fanbox post (${p}) may not exist</div>` };
     }
-};
-
-const getPost = async (p) => {
-    if (post && post.id === p) {
-        return post;
-    }
-    const api_url = `https://api.fanbox.cc/post.info?postId=${p}`;
-    post = await ofetch(api_url, { headers: getHeader() });
-    post = post.body;
 };
 
 // embedded items
@@ -192,8 +179,9 @@ const blogT = async (body) => {
 const convArticle = async (i) => {
     const items = await cache.tryGet(`https://${i.creatorId}.fanbox.cc/posts/${i.id}`, async () => {
         let ret = '';
+        const resp = await ofetch(`https://api.fanbox.cc/post.info?postId=${i.id}`, { headers });
+        const post = resp.body;
 
-        await getPost(i.id);
         if (i.title) {
             ret += `${i.title}<hr>`;
         }
@@ -249,4 +237,4 @@ const convArticle = async (i) => {
     return items;
 };
 
-export { convArticle, getHeader };
+export { convArticle, headers };

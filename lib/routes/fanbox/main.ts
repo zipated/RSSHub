@@ -1,7 +1,7 @@
 import { Route } from '@/types';
 import ofetch from '@/utils/ofetch';
 import { isValidHost } from '@/utils/valid-host';
-import { convArticle, getHeader } from './utils';
+import { convArticle, headers } from './utils';
 
 export const route: Route = {
     path: '/:user?',
@@ -31,7 +31,7 @@ async function handler(ctx) {
 
     try {
         const userApi = `https://api.fanbox.cc/creator.get?creatorId=${user}`;
-        const respU = await ofetch(userApi, { headers: getHeader() });
+        const respU = await ofetch(userApi, { headers });
         title = `${respU.body.user.name}'s fanbox`;
         descr = respU.body.description;
     } catch (error) {
@@ -40,7 +40,7 @@ async function handler(ctx) {
 
     // Get user posts
     const postsApi = `https://api.fanbox.cc/post.listCreator?creatorId=${user}&limit=20`;
-    const response = await ofetch(postsApi, { headers: getHeader() });
+    const response = await ofetch(postsApi, { headers });
 
     // Render posts
     const items = await Promise.all(response.body.items.map((i) => convArticle(i)));
