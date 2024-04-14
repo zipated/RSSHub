@@ -8,14 +8,24 @@ export const route: Route = {
     categories: ['social-media'],
     example: '/fanbox/otomeoto',
     parameters: { user: 'optional - User name. Can be found in URL. Default is official news' },
-    radar: [
-        {
-            source: ['fanbox.cc/@:user'],
-        },
-    ],
     name: 'User',
     maintainers: ['sgqy', 'zipated'],
     handler,
+    features: {
+        requireConfig: [
+            {
+                name: 'FANBOX_SESSION_ID',
+                optional: true,
+                description: 'equals to `FANBOXSESSID` in site cookies.',
+            },
+        ],
+        requirePuppeteer: false,
+        antiCrawler: true,
+        supportRadar: false,
+        supportBT: false,
+        supportPodcast: false,
+        supportScihub: false,
+    },
 };
 
 async function handler(ctx) {

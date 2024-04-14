@@ -198,7 +198,6 @@ const convArticle = async (i) => {
                 title: i.title || 'No title',
                 description: ret,
                 pubDate: new Date(i.publishedDatetime).toUTCString(),
-                lastBuildDate: new Date(i.updatedDatetime).toUTCString(),
                 link: `https://${i.creatorId}.fanbox.cc/posts/${i.id}`,
                 category: i.tags,
             };
@@ -229,7 +228,6 @@ const convArticle = async (i) => {
             title: i.title || 'No title',
             description: ret,
             pubDate: new Date(i.publishedDatetime).toUTCString(),
-            lastBuildDate: new Date(i.updatedDatetime).toUTCString(),
             link: `https://${i.creatorId}.fanbox.cc/posts/${i.id}`,
             category: i.tags,
         };
