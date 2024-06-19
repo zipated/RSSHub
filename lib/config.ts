@@ -259,6 +259,8 @@ export type Config = {
         cookie?: string;
     };
     twitter: {
+        oauthTokens?: string[];
+        oauthTokenSecrets?: string[];
         username?: string[];
         password?: string[];
         authenticationSecret?: string[];
@@ -620,6 +622,8 @@ const calculateValue = () => {
             cookie: envs.TOPHUB_COOKIE,
         },
         twitter: {
+            oauthTokens: envs.TWITTER_OAUTH_TOKEN?.split(','),
+            oauthTokenSecrets: envs.TWITTER_OAUTH_TOKEN_SECRET?.split(','),
             username: envs.TWITTER_USERNAME?.split(','),
             password: envs.TWITTER_PASSWORD?.split(','),
             authenticationSecret: envs.TWITTER_AUTHENTICATION_SECRET?.split(','),
