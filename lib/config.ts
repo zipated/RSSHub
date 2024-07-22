@@ -265,6 +265,8 @@ export type Config = {
         cookie: string;
     };
     twitter: {
+        oauthTokens?: string[];
+        oauthTokenSecrets?: string[];
         username?: string[];
         password?: string[];
         authenticationSecret?: string[];
