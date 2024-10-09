@@ -183,6 +183,11 @@ export type Config = {
     lightnovel: {
         cookie?: string;
     };
+    lorientlejour: {
+        token?: string;
+        username?: string;
+        password?: string;
+    };
     malaysiakini: {
         email?: string;
         password?: string;
@@ -568,6 +573,11 @@ const calculateValue = () => {
         },
         lightnovel: {
             cookie: envs.SECURITY_KEY,
+        },
+        lorientlejour: {
+            token: envs.LORIENTLEJOUR_TOKEN,
+            username: envs.LORIENTLEJOUR_USERNAME,
+            password: envs.LORIENTLEJOUR_PASSWORD,
         },
         malaysiakini: {
             email: envs.MALAYSIAKINI_EMAIL,
