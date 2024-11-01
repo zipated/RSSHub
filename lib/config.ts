@@ -97,6 +97,9 @@ export type Config = {
     civitai: {
         cookie?: string;
     };
+    dianping: {
+        cookie?: string;
+    };
     dida365: {
         username?: string;
         password?: string;
@@ -150,6 +153,9 @@ export type Config = {
     };
     google: {
         fontsApiKey?: string;
+    };
+    guozaoke: {
+        cookies?: string;
     };
     hefeng: {
         key?: string;
@@ -267,8 +273,14 @@ export type Config = {
     scihub: {
         host?: string;
     };
+    sis001: {
+        baseUrl?: string;
+    };
     skeb: {
         bearerToken?: string;
+    };
+    sorrycc: {
+        cookie?: string;
     };
     spotify: {
         clientId?: string;
@@ -280,6 +292,7 @@ export type Config = {
     };
     telegram: {
         token?: string;
+        session?: string;
     };
     tophub: {
         cookie?: string;
@@ -293,6 +306,7 @@ export type Config = {
         username?: string[];
         password?: string[];
         authenticationSecret?: string[];
+        phoneOrEmail?: string[];
         authToken?: string[];
     };
     uestc: {
@@ -491,6 +505,9 @@ const calculateValue = () => {
         civitai: {
             cookie: envs.CIVITAI_COOKIE,
         },
+        dianping: {
+            cookie: envs.DIANPING_COOKIE,
+        },
         dida365: {
             username: envs.DIDA365_USERNAME,
             password: envs.DIDA365_PASSWORD,
@@ -544,6 +561,9 @@ const calculateValue = () => {
         },
         google: {
             fontsApiKey: envs.GOOGLE_FONTS_API_KEY,
+        },
+        guozaoke: {
+            cookies: envs.GUOZAOKE_COOKIES,
         },
         hefeng: {
             // weather
@@ -662,8 +682,14 @@ const calculateValue = () => {
         scihub: {
             host: envs.SCIHUB_HOST || 'https://sci-hub.se/',
         },
+        sis001: {
+            baseUrl: envs.SIS001_BASE_URL || 'https://sis001.com',
+        },
         skeb: {
             bearerToken: envs.SKEB_BEARER_TOKEN,
+        },
+        sorrycc: {
+            cookie: envs.SORRYCC_COOKIES,
         },
         spotify: {
             clientId: envs.SPOTIFY_CLIENT_ID,
@@ -692,6 +718,7 @@ const calculateValue = () => {
             username: envs.TWITTER_USERNAME?.split(','),
             password: envs.TWITTER_PASSWORD?.split(','),
             authenticationSecret: envs.TWITTER_AUTHENTICATION_SECRET?.split(','),
+            phoneOrEmail: envs.TWITTER_PHONE_OR_EMAIL?.split(','),
             authToken: envs.TWITTER_AUTH_TOKEN?.split(','),
         },
         uestc: {
