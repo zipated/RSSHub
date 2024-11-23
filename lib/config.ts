@@ -252,6 +252,9 @@ export type Config = {
     notion: {
         key?: string;
     };
+    patreon: {
+        sessionId?: string;
+    };
     pianyuan: {
         cookie?: string;
     };
@@ -349,6 +352,9 @@ export type Config = {
     xiaoyuzhou: {
         device_id?: string;
         refresh_token?: string;
+    };
+    xiaohongshu: {
+        cookie?: string;
     };
     ximalaya: {
         token?: string;
@@ -672,6 +678,9 @@ const calculateValue = () => {
         notion: {
             key: envs.NOTION_TOKEN,
         },
+        patreon: {
+            sessionId: envs.PATREON_SESSION_ID,
+        },
         pianyuan: {
             cookie: envs.PIANYUAN_COOKIE,
         },
@@ -769,6 +778,9 @@ const calculateValue = () => {
         xiaoyuzhou: {
             device_id: envs.XIAOYUZHOU_ID,
             refresh_token: envs.XIAOYUZHOU_TOKEN,
+        },
+        xiaohongshu: {
+            cookie: envs.XIAOHONGSHU_COOKIE,
         },
         ximalaya: {
             token: envs.XIMALAYA_TOKEN,
