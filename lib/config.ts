@@ -90,6 +90,7 @@ export type Config = {
         ownerUserId?: string;
         description?: string;
         price?: number;
+        userLimit?: number;
     };
 
     // Route-specific Configurations
@@ -521,6 +522,7 @@ const calculateValue = () => {
             ownerUserId: envs.FOLLOW_OWNER_USER_ID,
             description: envs.FOLLOW_DESCRIPTION,
             price: toInt(envs.FOLLOW_PRICE),
+            userLimit: toInt(envs.FOLLOW_USER_LIMIT),
         },
 
         // Route-specific Configurations
