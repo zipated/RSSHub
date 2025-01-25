@@ -1,7 +1,8 @@
 import type { Namespace } from '@/types';
 
 export const namespace: Namespace = {
-    name: '中国教育考试网',
-    url: 'www.neea.cn',
+    name: '中国经济网',
+    url: 'www.ce.cn',
+    categories: ['traditional-media'],
     lang: 'zh-CN',
 };
