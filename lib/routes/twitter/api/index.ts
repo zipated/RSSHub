@@ -4,7 +4,7 @@ import webApi from './web-api/api';
 import { config } from '@/config';
 
 const enableThirdPartyApi = config.twitter.thirdPartyApi;
-const enableMobileApi = config.twitter.username && config.twitter.password;
+const enableMobileApi = (config.twitter.username && config.twitter.password) || (config.twitter.oauthTokens && config.twitter.oauthTokenSecrets);
 const enableWebApi = config.twitter.authToken;
 
 type ApiItem = (id: string, params?: Record<string, any>) => Promise<Record<string, any>> | Record<string, any> | null;
