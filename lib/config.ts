@@ -202,6 +202,8 @@ type ConfigEnvKeys =
     | 'TUMBLR_CLIENT_ID'
     | 'TUMBLR_CLIENT_SECRET'
     | 'TUMBLR_REFRESH_TOKEN'
+    | 'TWITTER_OAUTH_TOKEN'
+    | 'TWITTER_OAUTH_TOKEN_SECRET'
     | 'TWITTER_USERNAME'
     | 'TWITTER_PASSWORD'
     | 'TWITTER_AUTHENTICATION_SECRET'
@@ -608,6 +610,8 @@ export type Config = {
         refreshToken?: string;
     };
     twitter: {
+        oauthTokens?: string[];
+        oauthTokenSecrets?: string[];
         username?: string[];
         password?: string[];
         authenticationSecret?: string[];
@@ -1086,6 +1090,8 @@ const calculateValue = () => {
             refreshToken: envs.TUMBLR_REFRESH_TOKEN,
         },
         twitter: {
+            oauthTokens: envs.TWITTER_OAUTH_TOKEN?.split(','),
+            oauthTokenSecrets: envs.TWITTER_OAUTH_TOKEN_SECRET?.split(','),
             username: envs.TWITTER_USERNAME?.split(','),
             password: envs.TWITTER_PASSWORD?.split(','),
             authenticationSecret: envs.TWITTER_AUTHENTICATION_SECRET?.split(','),
