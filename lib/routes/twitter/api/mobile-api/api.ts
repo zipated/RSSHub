@@ -303,10 +303,12 @@ export default {
     getUserTweets,
     getUserTweetsAndReplies,
     getUserMedia,
-    // getUserLikes,
+    getUserLikes: () => null,
     excludeRetweet,
     getSearch,
     getList,
     getUserTweet,
+    getHomeTimeline: () => null,
+    getHomeLatestTimeline: () => null,
     init: () => void 0,
 };

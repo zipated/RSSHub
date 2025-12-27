@@ -2,11 +2,11 @@ import { config } from '@/config';
 import ConfigNotFoundError from '@/errors/types/config-not-found';
 
 import devApi from './developer-api/api';
-// import mobileApi from './mobile-api/api';
+import mobileApi from './mobile-api/api';
 import webApi from './web-api/api';
 
 const enableThirdPartyApi = config.twitter.thirdPartyApi;
-// const enableMobileApi = config.twitter.username && config.twitter.password;
+const enableMobileApi = (config.twitter.username && config.twitter.password) || (config.twitter.oauthTokens && config.twitter.oauthTokenSecrets);
 const enableWebApi = config.twitter.authToken;
 const enableDeveloperApi = config.twitter.consumerKey && config.twitter.consumerSecret;
 
@@ -43,6 +43,8 @@ if (enableThirdPartyApi || enableWebApi) {
     api = webApi;
 } else if (enableDeveloperApi) {
     api = devApi;
+} else if (enableMobileApi) {
+    api = mobileApi;
 }
 
 export default api;

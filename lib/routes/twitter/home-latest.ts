@@ -9,17 +9,27 @@ export const route: Route = {
     example: '/twitter/home_latest',
     features: {
         requireConfig: [
-            // {
-            //     name: 'TWITTER_USERNAME',
-            //     description: 'Please see above for details.',
-            // },
-            // {
-            //     name: 'TWITTER_PASSWORD',
-            //     description: 'Please see above for details.',
-            // },
+            {
+                name: 'TWITTER_USERNAME',
+                description: 'Please see above for details.',
+            },
+            {
+                name: 'TWITTER_PASSWORD',
+                description: 'Please see above for details.',
+            },
+            {
+                name: 'TWITTER_AUTHENTICATION_SECRET',
+                description: 'TOTP 2FA secret, please see above for details.',
+                optional: true,
+            },
             {
                 name: 'TWITTER_AUTH_TOKEN',
                 description: 'Please see above for details.',
+            },
+            {
+                name: 'TWITTER_OAUTH_TOKEN',
+                description: 'mobile oauth token.',
+                optional: true,
             },
         ],
         requirePuppeteer: false,
